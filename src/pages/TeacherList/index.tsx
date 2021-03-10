@@ -1,0 +1,85 @@
+import React, { useState, FormEvent } from 'react';
+
+import PageHeader from '../../components/PageHeader';
+import ListaPlanos from '../../components/ListaPlanos';
+import Input from '../../components/Input';
+import Select from '../../components/Select';
+
+import api from '../../services/api';
+
+import './styles.css';
+
+function TeacherList() {
+  const [teachers, setTeachers] = useState([]);
+
+  const [subject, setSubject] = useState('');
+  const [week_day, setWeekDay] = useState('');
+  const [recorrencia, setRecorrencia] = useState('');
+
+  async function searchTeachers(e: FormEvent) {
+    e.preventDefault();
+
+    const response = await api.get('classes', {
+      params: {
+        subject,
+        week_day,
+        recorrencia,
+      }
+    });
+
+    setTeachers(response.data);
+  }
+
+  return (
+    <div id="page-teacher-list" className="container">
+      <PageHeader title="Estes são os planos disponíveis.">
+        {/* <form id="search-teachers" onSubmit={searchTeachers}>
+          <Select
+            name="subject"
+            label="Plano"
+            value={subject}
+            onChange={(e) => { setSubject(e.target.value) }}
+            options={[
+              { value: 'Corrida', label: 'Corrida' },
+              { value: 'Musculacao', label: 'Musculação' },
+              { value: 'Zumba', label: 'Zumba' },
+            ]}
+          />
+          <Select
+            name="week_day"
+            label="Selecione o status"
+            value={week_day}
+            onChange={(e) => { setWeekDay(e.target.value) }}
+            options={[
+              { value: '0', label: 'Pago' },
+              { value: '1', label: 'A Pagar' },
+              { value: '2', label: 'Cancelado' },
+            ]}
+          />
+          <Select
+            name="recorrencia"
+            label="Recorrencia"
+            // value={time}
+            value={recorrencia}
+            onChange={(e) => { setRecorrencia(e.target.value) }}
+            options={[
+              { value: '0', label: 'Mensal' },
+              { value: '1', label: 'Trimestral' },
+              { value: '2', label: 'Anual' },
+            ]}
+          />
+
+          <button type="submit">
+            Buscar
+          </button>
+        </form> */}
+      </PageHeader>
+
+      <main>
+        <ListaPlanos />
+      </main>
+    </div>
+  )
+}
+
+export default TeacherList;
